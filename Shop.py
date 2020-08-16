@@ -3,7 +3,10 @@ import requests
 from bs4 import BeautifulSoup
 import sys
 
+''' This is a command line application built using python3 to search for mobiles using various filters. This module is used by webscraping. '''
+
 def help():
+    # Help module listing various filters and syntax
     print("-"*100)
     print("Please enter one of the below filters")
     print("[*] OPTIONS")
@@ -49,20 +52,21 @@ def help():
     print("-"*100)
 
 
-
+# To search the mobile phones via brand filter
 def brand_flipkart(brand):
+    # URL
     url_start = "https://www.flipkart.com/search?q=mobiles&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off&p%5B%5D=facets.brand%255B%255D%3D"
     brand = str(brand)
     final_url = url_start+brand
     headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36"}
-    # Request
     req = requests.get(final_url, headers=headers).text
-    soup = BeautifulSoup(req, 'lxml')
-
+    soup = BeautifulSoup(req, 'lxml') # Using lxml as a parser
+    # Using fina_all function getting the information
     product_am = soup.find_all("div", {'class':'_3wU53n'})
     price_am = soup.find_all('div', {'class':'_1vC4OE _2rQ-NK'})
     rating_am = soup.find_all('div', {'class':'hGSR34'})
 
+    # Printing out the information
     for index in range(len(product_am)):
         try:
             print("Product Name :", product_am[index].string)
@@ -72,8 +76,9 @@ def brand_flipkart(brand):
         except IndexError:
             continue
 
-
+# To search mobile phones via ram capacity
 def ram_flipkart(ram):
+    # Getting the url
     end = ''
     url_start = "https://www.flipkart.com/search?q=mobiles&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off&p%5B%5D=facets.ram%255B%255D%3D"
     ram = str(ram)
@@ -91,17 +96,17 @@ def ram_flipkart(ram):
         print("Please refer help")
         print("\n")
         main()
-
+    
+    # Pulling up the contents
     final_url = url_start+end
     headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36"}
-    # Request
     req = requests.get(final_url, headers=headers).text
     soup = BeautifulSoup(req, 'lxml')
-
     product = soup.find_all("div", {'class':'_3wU53n'})
     price = soup.find_all('div', {'class':'_1vC4OE _2rQ-NK'})
     rating = soup.find_all('div', {'class':'hGSR34'})
-
+    
+    # Printing out the information
     for index in range(0, len(product)):
         try:
             print("Product Name: ", product[index].string)
@@ -111,19 +116,19 @@ def ram_flipkart(ram):
         except IndexError:
             continue
 
+# To search the mobile phones via price limit
 def price_limit(price):
     url = "https://www.flipkart.com/search?q=mobiles&sid=tyy%2C4io&as=on&as-show=on&otracker=AS_QueryStore_OrganicAutoSuggest_1_7_na_na_ps&otracker1=AS_QueryStore_OrganicAutoSuggest_1_7_na_na_ps&as-pos=1&as-type=HISTORY&suggestionId=mobiles%7CMobiles&requestId=55999c83-0a5d-4b08-ab06-7246a47bfc87&p%5B%5D=facets.price_range.from%3DMin&p%5B%5D=facets.price_range.to%3D"+str(price)
     # Headers
     headers = dict()
     headers["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36"
-
     req = requests.get(url, headers=headers).text
     html = BeautifulSoup(req, 'lxml')
-
     product = html.find_all("div", {'class':'_3wU53n'})
     price = html.find_all('div', {'class':'_1vC4OE _2rQ-NK'})
     rating = html.find_all('div', {'class':'hGSR34'})
-
+    
+    # Printing out the information
     for index in range(len(product)):
         try:
             print("Product Name : ", product[index].text)
@@ -133,7 +138,9 @@ def price_limit(price):
         except IndexError:
             continue
 
+# To search mobile phones via internal storage capacity
 def internal(size):
+    # Obtaining the URL
     url_start = "https://www.flipkart.com/search?q=mobiles&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off&as-pos=1&as-type=HISTORY&as-backfill=on&p%5B%5D=facets.internal_storage%255B%255D%3D"
     end = ''
     if size == "64":
@@ -156,15 +163,13 @@ def internal(size):
     # Headers
     headers = dict()
     headers["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36"
-
-    # Request
     req = requests.get(final_url, headers=headers).text
     soup = BeautifulSoup(req, 'lxml')
-
     product = soup.find_all('div',{'class':'_3wU53n'})
     price = soup.find_all('div', {'class':'_1vC4OE _2rQ-NK'})
     rating = soup.find_all('div', {'class':'hGSR34'})
-
+    
+    # Printing out the information
     for index in range(len(product)):
         try:
             print("Product Name : ", product[index].string)
@@ -174,7 +179,9 @@ def internal(size):
         except IndexError:
             continue
 
+# To search mobile phone via screen size of the mobile
 def screen(size):
+    # Getting the URL
     url_start = "https://www.flipkart.com/search?q=mobiles&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off&as-pos=1&as-type=HISTORY&as-backfill=on&p%5B%5D=facets.screen_size%255B%255D%3D"
     end = ''
     size = str(size)
@@ -198,15 +205,13 @@ def screen(size):
     # Headers
     headers = dict()
     headers["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36"
-
-    # Request
     req = requests.get(final_url, headers=headers).text
     soup = BeautifulSoup(req, 'lxml')
-
     product = soup.find_all('div', {'class':'_3wU53n'})
     price = soup.find_all('div', {'class':'_1vC4OE _2rQ-NK'})
     rating = soup.find_all('div', {'class':'hGSR34'})
-
+    
+    # Printing out the information
     for index in range(len(product)):
         try:
             print("Product Name : ", product[index].string)
@@ -216,7 +221,7 @@ def screen(size):
         except IndexError:
             continue
 
-
+# The main program to get the filters
 def main():
     print("[*] For help enter -H or --help")
     inp = str(input("[*] Enter the filter : "))
@@ -235,7 +240,6 @@ def main():
         screen(inp[7:])
     elif inp == "exit":
         sys.exit()
-
     else:
         print("\n")
         print("CONDITION UNKNOWN")
